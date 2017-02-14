@@ -1,10 +1,31 @@
-require "bundler/gem_tasks"
-require "rake/testtask"
+require "rubygems"
+require "rubygems/package_task"
+require "rdoc/task"
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList['test/**/*_test.rb']
+GEM_NAME = "knife-art"
+
+spec = eval(File.read("knife-art.gemspec"))
+
+Gem::PackageTask.new(spec) do |pkg|
+  pkg.gem_spec = spec
 end
 
-task :default => :test
+task :install => :package do
+  sh %{gem install pkg/#{GEM_NAME}-#{KnifeArt::VERSION} --no-rdoc --no-ri}
+end
+
+task :uninstall do
+  sh %{gem uninstall #{GEM_NAME} -x -v #{KnifeArt::VERSION} }
+end
+
+begin
+  require "chefstyle"
+  require "rubocop/rake_task"
+  RuboCop::RakeTask.new(:style) do |task|
+    task.options << "--display-cop-names"
+  end
+rescue LoadError
+  STDERR.puts "\n*** chefstyle not available. (sudo) gem install chefstyle to run unit tests. ***\n\n"
+end
+
+task default: [:style]
