@@ -1,0 +1,16 @@
+
+require 'chef/knife'
+require 'chef/knife/cookbook_site_show'
+
+class Chef
+  class Knife
+    class ArtifactoryShow < Knife::CookbookSiteShow
+
+      dependency_loaders.concat(superclass.dependency_loaders)
+      options.merge!(superclass.options)
+
+      banner "knife artifactory show COOKBOOK [VERSION] (options)"
+      category "artifactory"
+    end
+  end
+end

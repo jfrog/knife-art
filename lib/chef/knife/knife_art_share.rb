@@ -14,12 +14,12 @@ require 'chef/knife/cookbook_site_share'
 
 class Chef
   class Knife
-    class ArtifactoryCookbookShare < Knife::CookbookSiteShare
+    class ArtifactoryShare < Knife::CookbookSiteShare
 
       dependency_loaders.concat(superclass.dependency_loaders)
       options.merge!(superclass.options)
 
-      banner "knife artifactory cookbook share COOKBOOK [CATEGORY] (options)"
+      banner "knife artifactory share COOKBOOK [CATEGORY] (options)"
       category "artifactory"
 
       alias_method :orig_do_upload, :do_upload
@@ -36,6 +36,8 @@ class Chef
         Chef::Log.debug("[KNIFE-ART] running site share with config: #{config}")
         orig_run
       end
+
+      private
 
       def do_upload(cookbook_filename, cookbook_category, user_id, user_secret_filename)
         # Use Artifactory deployment logic only if flag sent by Artifactory plugin
