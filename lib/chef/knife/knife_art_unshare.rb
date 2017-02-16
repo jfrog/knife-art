@@ -11,7 +11,7 @@ class Chef
         require "chef/json_compat"
       end
 
-      banner "knife artofactory unshare COOKBOOK VERSION"
+      banner "knife artifactory unshare COOKBOOK VERSION"
       category "artifactory"
 
       option :supermarket_site,
