@@ -46,11 +46,11 @@ class Chef
           return orig_desired_cookbook_data
         end
         @desired_cookbook_data ||= begin
-          uri = if @name_args.length == 1
-                  current_cookbook_data["latest_version"]
-                else
-                  specific_cookbook_version_url
-                end
+                                     uri = if @name_args.length == 1
+                                              current_cookbook_data["latest_version"]
+                                           else
+                                              specific_cookbook_version_url
+                                           end
 
           noauth_rest.get(uri, auth_header)
         end

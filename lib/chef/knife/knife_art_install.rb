@@ -28,10 +28,10 @@ class Chef
 
       private
 
-      def download_cookbook_to
+      def download_cookbook_to(download_path)
         unless config[:artifactory_install]
           Chef::Log.debug('[KNIFE-ART] ArtifactoryInstall::download_cookbook_to called without artifactory flag, delegating to super')
-          return orig_download_cookbook_to
+          return orig_download_cookbook_to(download_path)
         end
         downloader = Chef::Knife::ArtifactoryDownload.new
         downloader.config[:file] = download_path
