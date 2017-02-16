@@ -35,6 +35,8 @@ class Chef
         config[:artifactory_deploy] = true
         Chef::Log.debug("[KNIFE-ART] running site share with config: #{config}")
         orig_run
+        # cleanup threadlocal
+        Thread.current[:artifactory_deploy] = nil
       end
 
       private
@@ -72,8 +74,6 @@ class Chef
       def load_signing_key(key_file, raw_key = nil)
         Chef::Log.debug("[KNIFE-ART] global var: #{Thread.current[:artifactory_deploy]}")
         if Thread.current.key?(:artifactory_deploy) and Thread.current[:artifactory_deploy].eql? 'yes'
-          # Cleanup threadlocal as soon as possible
-          Thread.current[:artifactory_deploy] = nil
           Chef::Log.debug('[KNIFE-ART] Artifactory plugin substituting for Chef::Http::Authenticator --> omitting signing key usage')
           @sign_request = false
           @raw_key = ''
