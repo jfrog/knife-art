@@ -42,7 +42,7 @@ class Chef
       def do_upload(cookbook_filename, cookbook_category, user_id, user_secret_filename)
         # Use Artifactory deployment logic only if flag sent by Artifactory plugin
         unless config[:artifactory_deploy]
-          Chef::Log.debug('[KNIFE-ART] do_upload called without artifactory flag, delegating to super')
+          Chef::Log.debug('[KNIFE-ART] ArtifactoryShare::do_upload called without artifactory flag, delegating to super')
           orig_do_upload(cookbook_filename, cookbook_category, user_id, user_secret_filename)
           return
         end
@@ -62,7 +62,7 @@ class Chef
   end
 end
 
-# Http::Authenticator monkeypatch to allow skipping signing key verification when deploying to Artifactory
+# Chef::Http::Authenticator monkeypatch to allow skipping signing key verification when deploying to Artifactory
 class Chef
   class HTTP
     class Authenticator
@@ -74,7 +74,7 @@ class Chef
         if Thread.current.key?(:artifactory_deploy) and Thread.current[:artifactory_deploy].eql? 'yes'
           # Cleanup threadlocal as soon as possible
           Thread.current[:artifactory_deploy] = nil
-          Chef::Log.debug('[KNIFE-ART] Artifactory plugin substituting for authenticator --> omitting signing key usage')
+          Chef::Log.debug('[KNIFE-ART] Artifactory plugin substituting for Chef::Http::Authenticator --> omitting signing key usage')
           @sign_request = false
           @raw_key = ''
           @key = ''

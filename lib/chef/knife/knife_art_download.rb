@@ -32,7 +32,7 @@ class Chef
 
       def current_cookbook_data
         unless config[:artifactory_download]
-          Chef::Log.debug('[KNIFE-ART] current_cookbook_data called without artifactory flag, delegating to super')
+          Chef::Log.debug('[KNIFE-ART] ArtifactoryDownload::current_cookbook_data called without artifactory flag, delegating to super')
           return orig_current_cookbook_data
         end
         @current_cookbook_data ||= begin
@@ -42,7 +42,7 @@ class Chef
 
       def desired_cookbook_data
         unless config[:artifactory_download]
-          Chef::Log.debug('[KNIFE-ART] desired_cookbook_data called without artifactory flag, delegating to super')
+          Chef::Log.debug('[KNIFE-ART] ArtifactoryDownload::desired_cookbook_data called without artifactory flag, delegating to super')
           return orig_desired_cookbook_data
         end
         @desired_cookbook_data ||= begin
@@ -58,7 +58,7 @@ class Chef
 
       def download_cookbook
         unless config[:artifactory_download]
-          Chef::Log.debug('[KNIFE-ART] desired_cookbook_data called without artifactory flag, delegating to super')
+          Chef::Log.debug('[KNIFE-ART] ArtifactoryDownload::download_cookbook called without artifactory flag, delegating to super')
           return orig_download_cookbook
         end
         ui.info "Downloading #{@name_args[0]} from Supermarket at version #{version} to #{download_location}"

@@ -20,7 +20,6 @@ class Chef
       alias_method :orig_run, :run
       alias_method :orig_download_cookbook_to, :download_cookbook_to
 
-
       def run
         config[:artifactory_install] = true
         Chef::Log.debug("[KNIFE-ART] running site install with config: #{config}")
@@ -30,8 +29,8 @@ class Chef
       private
 
       def download_cookbook_to
-        unless config[:artifactory_download]
-          Chef::Log.debug('[KNIFE-ART] download_cookbook_to called without artifactory flag, delegating to super')
+        unless config[:artifactory_install]
+          Chef::Log.debug('[KNIFE-ART] ArtifactoryInstall::download_cookbook_to called without artifactory flag, delegating to super')
           return orig_download_cookbook_to
         end
         downloader = Chef::Knife::ArtifactoryDownload.new
