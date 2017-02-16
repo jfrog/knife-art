@@ -26,6 +26,7 @@ class Chef
       alias_method :orig_run, :run
 
       def run
+        begin
         # I'm forced to use threadlocal until we find a better solution... can't really find a way to pass configuration
         # down to the Chef::CookbookUploader, Chef::ServerAPI, Chef::HTTP or Chef::HTTP::Authenticator
         # (which are created one after another starting) with CookbookUploader to make it skip the signing key verification.
@@ -35,8 +36,10 @@ class Chef
         config[:artifactory_deploy] = true
         Chef::Log.debug("[KNIFE-ART] running site share with config: #{config}")
         orig_run
-        # cleanup threadlocal
-        Thread.current[:artifactory_deploy] = nil
+        ensure
+          # always cleanup threadlocal
+          Thread.current[:artifactory_deploy] = nil
+        end
       end
 
       private
