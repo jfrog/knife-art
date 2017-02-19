@@ -38,7 +38,7 @@ class Chef
         confirm "Are you sure you want to delete version #{@cookbook_version} of the cookbook #{@cookbook_name} from Artifactory"
 
         begin
-          url = "#{cookbooks_api_url}/api/v1/cookbooks/#{@cookbook_name}/#{@cookbook_version}"
+          url = "#{cookbooks_api_url}/#{@cookbook_name}/#{@cookbook_version}"
           noauth_rest.delete(url, auth_header)
         rescue Net::HTTPServerException => e
           raise e unless (e.message =~ /Forbidden/ || e.message =~ /Unauthorized/)
