@@ -12,7 +12,7 @@ module Knife
         if url.user and url.password
           user = URI.unescape(url.user)
           password = URI.unescape(url.password)
-          return {"Authorization" => "Basic " + Base64.encode64("#{user}:#{password}")}
+          return {"Authorization" => "Basic " + Base64.strict_encode64("#{user}:#{password}")}
         end
         {}
         end
