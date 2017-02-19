@@ -22,8 +22,9 @@ class Chef
       banner "knife artifactory share COOKBOOK [CATEGORY] (options)"
       category "artifactory"
 
-      alias_method :orig_do_upload, :do_upload
       alias_method :orig_run, :run
+      alias_method :orig_get_category, :get_category
+      alias_method :orig_do_upload, :do_upload
 
       def run
         begin
@@ -44,6 +45,29 @@ class Chef
 
       private
 
+      # Pretty much copy paste of the original, just with authentication on the rest client...
+      def get_category(cookbook_name)
+        # Use Artifactory deployment logic only if flag sent by Artifactory plugin
+        unless config[:artifactory_deploy]
+          Chef::Log.debug('[KNIFE-ART] ArtifactoryShare::get_category called without artifactory flag, delegating to super')
+          return orig_get_category(cookbook_name)
+        end
+        begin
+          data = noauth_rest.get("#{config[:supermarket_site]}/api/v1/cookbooks/#{@name_args[0]}")
+          if data.nil?
+            return data["category"]
+          else
+            return 'Other'
+          end
+        rescue => e
+          return "Other" if e.kind_of?(Net::HTTPServerException) && e.response.code == "404"
+          ui.fatal("Unable to reach Supermarket: #{e.message}. Increase log verbosity (-VV) for more information.")
+          Chef::Log.debug("\n#{e.backtrace.join("\n")}")
+          exit(1)
+        end
+
+      end
+
       def do_upload(cookbook_filename, cookbook_category, user_id, user_secret_filename)
         # Use Artifactory deployment logic only if flag sent by Artifactory plugin
         unless config[:artifactory_deploy]
@@ -60,6 +84,7 @@ class Chef
         # ability to do anything with the response itself... i'm letting the parent catch it and terminate.
         # debug log will be able to show the response Artifactory returned in case of errors.
         file_contents = File.open(cookbook_filename, "rb") { |f| f.read }
+        # no need to send auth header here, 'normal' HTTP client uses url with credentials from config
         rest.post(uri, file_contents, {"content-type" => "application/x-binary"})
       end
 
