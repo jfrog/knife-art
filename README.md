@@ -1,3 +1,5 @@
+[![Gem Version](https://badge.fury.io/rb/knife-art.svg)](https://badge.fury.io/rb/knife-art)
+
 # knife-art
 Enables usage of Knife with basic authentication against an Artifactory backend (serving as the supermarket repo)  
 
