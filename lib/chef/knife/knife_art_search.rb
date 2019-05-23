@@ -4,7 +4,7 @@ require 'chef/knife/cookbook_site_search'
 
 class Chef
   class Knife
-    class ArtifactorySearch < Knife::CookbookSiteSearch
+    class ArtifactorySearch < Knife::SupermarketSearch
 
       dependency_loaders.concat(superclass.dependency_loaders)
       options.merge!(superclass.options)

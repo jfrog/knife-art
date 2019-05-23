@@ -2,7 +2,7 @@
 # 1. allow passing flags to the super class so that the do_upload method of this
 #    class is called and that signing key verification is skipped by the underlying Chef::HTTP::Authenticator that's
 #    used with the rest client (see comment below).
-# 2. Override (monkey patch) the required methods in Chef::HTTP::Authenticator and Knife::CookbookSiteShare
+# 2. Override (monkey patch) the required methods in Chef::HTTP::Authenticator and Knife::SupermarketShare
 #    to allow inserting our own logic that deploys a cookbook to Artifactory.
 #
 # The Supermarket API is kept (post /api/v1/cookbooks/cookbook_name) by Artifactory although it does not currently
@@ -14,7 +14,7 @@ require 'chef/knife/cookbook_site_share'
 
 class Chef
   class Knife
-    class ArtifactoryShare < Knife::CookbookSiteShare
+    class ArtifactoryShare < Knife::SupermarketShare
 
       dependency_loaders.concat(superclass.dependency_loaders)
       options.merge!(superclass.options)
