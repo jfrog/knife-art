@@ -1,10 +1,10 @@
 [![Gem Version](https://badge.fury.io/rb/knife-art.svg)](https://badge.fury.io/rb/knife-art)
 
-# knife-art
+# knife-artifactory
 Enables usage of Knife with basic authentication against an Artifactory backend (serving as the supermarket repo)  
 
 ### Installation
-`chef gem install knife-art`
+`chef gem install knife-artifactory`
 
 ### Client Configuration
 The only requirement is to setup the supermarket url in your `knife.rb` file as follows:
@@ -13,7 +13,7 @@ The only requirement is to setup the supermarket url in your `knife.rb` file as 
 ### Artifactory Configuration
 See the [Artifactory User Guide](https://www.jfrog.com/confluence/display/RTF/Chef+Supermarket)
 
-#### The knife-art plugin exposes all `knife supermarket` (or `knife cookbook site`) commands by using `knife artifactory`:
+#### The knife-artifactory plugin exposes all `knife supermarket` (or `knife cookbook site`) commands by using `knife artifactory`:
 ```
 knife artifactory download COOKBOOK [VERSION] (options)
 knife artifactory install COOKBOOK [VERSION] (options)

@@ -40,4 +40,4 @@ pkg/*
 
 # Intellij
 .idea/
-knife-art.iml
+knife-artifactory.iml

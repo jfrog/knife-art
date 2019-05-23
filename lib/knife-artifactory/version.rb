@@ -1,3 +1,3 @@
-module KnifeArt
+module KnifeArtifactory
   VERSION = '0.1.0'
 end

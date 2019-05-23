@@ -57,7 +57,7 @@ class Chef
 
       def auth_header
         @auth_header ||= begin
-          ::Knife::KnifeArt::KnifeArtUtils.auth_header_from(cookbooks_api_url)
+          ::KnifeArtifactory::Utils.auth_header_from(cookbooks_api_url)
         end
       end
 

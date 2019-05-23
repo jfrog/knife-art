@@ -2,9 +2,9 @@ require "rubygems"
 require "rubygems/package_task"
 require "rdoc/task"
 
-GEM_NAME = "knife-art"
+GEM_NAME = "knife-artifactory"
 
-spec = eval(File.read("knife-art.gemspec"))
+spec = eval(File.read("#{GEM_NAME}.gemspec"))
 
 Gem::PackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
