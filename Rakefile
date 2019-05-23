@@ -2,7 +2,7 @@ require "rubygems"
 require "rubygems/package_task"
 require "rdoc/task"
 
-GEM_NAME = "knife-artifactory"
+GEM_NAME = "knife-artifactory".freeze
 
 spec = eval(File.read("#{GEM_NAME}.gemspec"))
 
@@ -10,7 +10,7 @@ Gem::PackageTask.new(spec) do |pkg|
   pkg.gem_spec = spec
 end
 
-task :install => :package do
+task install: :package do
   sh %{gem install pkg/#{GEM_NAME}-#{KnifeArt::VERSION} --no-rdoc --no-ri}
 end
 

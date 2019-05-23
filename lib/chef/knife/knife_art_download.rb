@@ -3,9 +3,9 @@
 # REST clients, but in the interest of allowing not-only-newest knife client versions to work with Artifactory we chose
 # this solution for now.
 
-require 'chef/knife'
-require 'chef/knife/cookbook_site_download'
-require 'knife-artifactory/utils'
+require "chef/knife"
+require "chef/knife/cookbook_site_download"
+require "knife-artifactory/utils"
 
 class Chef
   class Knife
@@ -32,7 +32,7 @@ class Chef
 
       def current_cookbook_data
         unless config[:artifactory_download]
-          Chef::Log.debug('[KNIFE-ART] ArtifactoryDownload::current_cookbook_data called without artifactory flag, delegating to super')
+          Chef::Log.debug("[KNIFE-ART] ArtifactoryDownload::current_cookbook_data called without artifactory flag, delegating to super")
           return orig_current_cookbook_data
         end
         @current_cookbook_data ||= begin
@@ -42,15 +42,15 @@ class Chef
 
       def desired_cookbook_data
         unless config[:artifactory_download]
-          Chef::Log.debug('[KNIFE-ART] ArtifactoryDownload::desired_cookbook_data called without artifactory flag, delegating to super')
+          Chef::Log.debug("[KNIFE-ART] ArtifactoryDownload::desired_cookbook_data called without artifactory flag, delegating to super")
           return orig_desired_cookbook_data
         end
         @desired_cookbook_data ||= begin
-                                     uri = if @name_args.length == 1
-                                              current_cookbook_data["latest_version"]
-                                           else
-                                              specific_cookbook_version_url
-                                           end
+          uri = if @name_args.length == 1
+                  current_cookbook_data["latest_version"]
+                else
+                  specific_cookbook_version_url
+                end
 
           noauth_rest.get(uri, auth_header)
         end
@@ -58,7 +58,7 @@ class Chef
 
       def download_cookbook
         unless config[:artifactory_download]
-          Chef::Log.debug('[KNIFE-ART] ArtifactoryDownload::download_cookbook called without artifactory flag, delegating to super')
+          Chef::Log.debug("[KNIFE-ART] ArtifactoryDownload::download_cookbook called without artifactory flag, delegating to super")
           return orig_download_cookbook
         end
         ui.info "Downloading #{@name_args[0]} from Supermarket at version #{version} to #{download_location}"
@@ -70,7 +70,7 @@ class Chef
 
       def auth_header
         @auth_header ||= begin
-                            ::KnifeArtifactory::Utils.auth_header_from(cookbooks_api_url)
+                           ::KnifeArtifactory::Utils.auth_header_from(cookbooks_api_url)
                          end
       end
 

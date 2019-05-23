@@ -1,6 +1,6 @@
 
-require 'chef/knife'
-require 'chef/knife/cookbook_site_search'
+require "chef/knife"
+require "chef/knife/cookbook_site_search"
 
 class Chef
   class Knife

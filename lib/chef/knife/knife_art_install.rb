@@ -3,9 +3,8 @@
 # REST clients, but in the interest of allowing not-only-newest knife client versions to work with Artifactory we chose
 # this solution for now.
 
-
-require 'chef/knife'
-require 'chef/knife/cookbook_site_install'
+require "chef/knife"
+require "chef/knife/cookbook_site_install"
 
 class Chef
   class Knife
@@ -30,7 +29,7 @@ class Chef
 
       def download_cookbook_to(download_path)
         unless config[:artifactory_install]
-          Chef::Log.debug('[KNIFE-ART] ArtifactoryInstall::download_cookbook_to called without artifactory flag, delegating to super')
+          Chef::Log.debug("[KNIFE-ART] ArtifactoryInstall::download_cookbook_to called without artifactory flag, delegating to super")
           return orig_download_cookbook_to(download_path)
         end
         downloader = Chef::Knife::ArtifactoryDownload.new

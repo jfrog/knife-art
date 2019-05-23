@@ -1,7 +1,7 @@
 # More or less copy-pasted from cookbook_site_unshare because the http call happens inside the run method, not much
 # sense in extending it
 
-require 'chef/knife'
+require "chef/knife"
 
 class Chef
   class Knife
@@ -15,11 +15,11 @@ class Chef
       category "artifactory"
 
       option :supermarket_site,
-             :short => "-m SUPERMARKET_SITE",
-             :long => "--supermarket-site SUPERMARKET_SITE",
-             :description => "Supermarket Site",
-             :default => "https://supermarket.chef.io",
-             :proc => Proc.new { |supermarket| Chef::Config[:knife][:supermarket_site] = supermarket }
+             short: "-m SUPERMARKET_SITE",
+             long: "--supermarket-site SUPERMARKET_SITE",
+             description: "Supermarket Site",
+             default: "https://supermarket.chef.io",
+             proc: Proc.new { |supermarket| Chef::Config[:knife][:supermarket_site] = supermarket }
 
       def run
         @cookbook_name = @name_args[0]
@@ -41,7 +41,7 @@ class Chef
           url = "#{cookbooks_api_url}/#{@cookbook_name}/#{@cookbook_version}"
           noauth_rest.delete(url, auth_header)
         rescue Net::HTTPServerException => e
-          raise e unless (e.message =~ /Forbidden/ || e.message =~ /Unauthorized/)
+          raise e unless e.message =~ /Forbidden/ || e.message =~ /Unauthorized/
           ui.error "Forbidden: You must have delete permissions on the target repo to delete #{@cookbook_name}."
           exit 1
         end
