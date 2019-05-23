@@ -5,7 +5,7 @@
 
 require 'chef/knife'
 require 'chef/knife/cookbook_site_download'
-require 'knife-art/knife_art_utils'
+require 'knife-artifactory/utils'
 
 class Chef
   class Knife
@@ -70,7 +70,7 @@ class Chef
 
       def auth_header
         @auth_header ||= begin
-                            ::Knife::KnifeArt::KnifeArtUtils.auth_header_from(cookbooks_api_url)
+                            ::KnifeArtifactory::Utils.auth_header_from(cookbooks_api_url)
                          end
       end
 
