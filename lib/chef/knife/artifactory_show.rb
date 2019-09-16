@@ -1,10 +1,10 @@
 
 require 'chef/knife'
-require 'chef/knife/cookbook_site_show'
+require 'chef/knife/supermarket_show'
 
 class Chef
   class Knife
-    class ArtifactoryShow < Knife::CookbookSiteShow
+    class ArtifactoryShow < Knife::SupermarketShow
 
       dependency_loaders.concat(superclass.dependency_loaders)
       options.merge!(superclass.options)

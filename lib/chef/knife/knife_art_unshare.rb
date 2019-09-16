@@ -1,4 +1,4 @@
-# More or less copy-pasted from cookbook_site_unshare because the http call happens inside the run method, not much
+# More or less copy-pasted from supermarket_unshare because the http call happens inside the run method, not much
 # sense in extending it
 
 require 'chef/knife'

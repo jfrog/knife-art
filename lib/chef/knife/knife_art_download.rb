@@ -1,15 +1,15 @@
-# Overrides the default Chef::Knife::CookbookSiteShare to allow basic authentication against an Artifactory backend.
+# Overrides the default Chef::Knife::SupermarketShare to allow basic authentication against an Artifactory backend.
 # Ideally we would like to use a mechanism that allows injecting pluggable authentication middleware into the Chef::Http
 # REST clients, but in the interest of allowing not-only-newest knife client versions to work with Artifactory we chose
 # this solution for now.
 
 require 'chef/knife'
-require 'chef/knife/cookbook_site_download'
+require 'chef/knife/supermarket_download'
 require 'knife-art/knife_art_utils'
 
 class Chef
   class Knife
-    class ArtifactoryDownload < Knife::CookbookSiteDownload
+    class ArtifactoryDownload < Knife::SupermarketDownload
 
       dependency_loaders.concat(superclass.dependency_loaders)
       options.merge!(superclass.options)
