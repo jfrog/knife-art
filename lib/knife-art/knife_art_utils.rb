@@ -1,4 +1,5 @@
 require 'base64'
+require 'cgi'
 
 module Knife
   module KnifeArt
@@ -10,8 +11,8 @@ module Knife
         url = URI.parse(uri.gsub(%r{/+$}, ""))
         Chef::Log.debug("[KNIFE-ART] in util, parsed url: #{uri}")
         if url.user and url.password
-          user = URI.unescape(url.user)
-          password = URI.unescape(url.password)
+          user = CGI.unescape(url.user)
+          password = CGI.unescape(url.password)
           return {"Authorization" => "Basic " + Base64.strict_encode64("#{user}:#{password}")}
         end
         {}
