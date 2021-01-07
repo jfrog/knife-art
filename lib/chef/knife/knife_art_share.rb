@@ -22,6 +22,12 @@ class Chef
       banner "knife artifactory share COOKBOOK [CATEGORY] (options)"
       category "artifactory"
 
+      option :overwrite_cookbook,
+        long: "--[no-]overwrite-cookbook",
+        boolean: true,
+        default: true,
+        description: "Overwrite existing cookbook version if it already exists. Default is yes."
+
       alias_method :orig_run, :run
       alias_method :orig_get_category, :get_category
       alias_method :orig_do_upload, :do_upload
@@ -36,6 +42,12 @@ class Chef
         # Send artifactory deploy flag to super
         config[:artifactory_deploy] = true
         Chef::Log.debug("[KNIFE-ART] running site share with config: #{config}")
+
+        if !overwrite_cookbook? && cookbook_versions_in_artifactory.include?(cookbook_version)
+          ui.info("Cookbook version already exists, skipping upload.")
+          exit(0)
+        end
+
         orig_run
         ensure
           # always cleanup threadlocal
@@ -43,7 +55,57 @@ class Chef
         end
       end
 
+      #
+      # @example
+      #   cookbook_versions_in_artifactory #=> ["1.0.0", "1.0.1", "1.1.0", "1.2.0"]
+      #
+      # @return [Array<String>] versions in artifactory
+      #
+      def cookbook_versions_in_artifactory
+        return [] if cookbook_name.nil?
+
+        data = noauth_rest.get("#{supermarket_uri}/cookbooks/#{cookbook_name}")
+        data["metrics"]["downloads"]["versions"].keys
+      end
+
+      #
+      # @example
+      #   cookbook_version #=> 1.0.1
+      #
+      # @example
+      #   cookbook_version #=> 0.1.0
+      #
+      # @example
+      #   cookbook_version #=> nil
+      #
+      # @return [String, nil] version of cookbook present in cookbook path or nil if no
+      #   coobook versions exist locally.
+      #
+      def cookbook_version
+        cl = Chef::CookbookLoader.new(cookbook_path)
+        if cl.cookbook_exists?(cookbook_name)
+          cookbook = cl[cookbook_name]
+          cookbook.version
+        end
+      end
+
       private
+
+      def cookbook_name
+        @name_args[0] if @name_args.length >= 1
+      end
+
+      def cookbook_path
+        config[:cookbook_path] ||= Chef::Config[:cookbook_path]
+      end
+
+      def supermarket_uri
+        "#{config[:supermarket_site]}/api/v1"
+      end
+
+      def overwrite_cookbook?
+        config[:overwrite_cookbook]
+      end
 
       # Pretty much copy paste of the original, just with authentication on the rest client...
       def get_category(cookbook_name)
